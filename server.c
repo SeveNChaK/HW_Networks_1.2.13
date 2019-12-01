@@ -100,6 +100,9 @@ int main( int argc, char** argv) {
 
 	pthread_join(listenerThread, NULL);
 	fprintf(stdout, "%s\n", "Сервер завершил работу.");
+
+	free(themes);
+	free(listNews);
 	
 	return 0;
 }
@@ -151,10 +154,10 @@ void* listenerConnetions(void* args){
         }
 
         pthread_mutex_lock(&mutex);
-        //TODO добавить функцию поиска свободного места и только если нет места, увеличивать размер
-        	int indexClient = clientQuantity;
-        	clients = (struct Client*) realloc(clients, sizeof(struct Client) * (clientQuantity + 1));
-        //----
+       
+        int indexClient = clientQuantity;
+        clients = (struct Client*) realloc(clients, sizeof(struct Client) * (clientQuantity + 1));
+
         clients[indexClient].socket = clientSocket;
         strcpy(clients[indexClient].address, inet_ntoa(inetInfoAboutClient.sin_addr));
         clients[indexClient].port = inetInfoAboutClient.sin_port; //TODO возможно тут надо htons или что-то такое
